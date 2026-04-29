@@ -1,0 +1,23 @@
+-- CreateEnum
+CREATE TYPE "Market" AS ENUM ('SAHAM', 'FOREX', 'CRYPTO');
+
+-- AlterTable
+ALTER TABLE "Signal" ADD COLUMN     "imageUrl" TEXT,
+ADD COLUMN     "market" "Market" NOT NULL DEFAULT 'SAHAM';
+
+-- CreateTable
+CREATE TABLE "Post" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
+    "excerpt" TEXT,
+    "content" TEXT NOT NULL,
+    "coverUrl" TEXT,
+    "published" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Post_slug_key" ON "Post"("slug");

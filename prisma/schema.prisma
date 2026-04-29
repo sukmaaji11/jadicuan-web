@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(FREE)
+  trackers  Tracker[]
+  createdAt DateTime @default(now())
+  trades   Trade[]
+}
+
+model Signal {
+  id          String   @id @default(cuid())
+  code        String
+  companyName String?
+  timeframe   String?
+  entryMin    Float
+  entryMax    Float
+  tp1         Float?
+  tp2         Float?
+  sl          Float
+  status      SignalStatus @default(OPEN)
+  summary     String?
+  content     String?
+  imageUrl    String?   // ⬅️ gambar chart
+  createdAt   DateTime @default(now())
+}
+
+model Tracker {
+  id        String   @id @default(cuid())
+  userId    String
+  code      String
+  buyPrice  Float
+  lot       Int
+  note      String?
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Trade {
+  id        String   @id @default(cuid())
+  userId    String
+  code      String
+  entry     Float
+  exit      Float?
+  quantity  Int
+  type      String   // BUY / SELL
+  status    String   // OPEN / CLOSED
+  profit    Float?   // auto hitung
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+
+    // 🔥 NEW
+  note      String?
+  setup     String?
+  emotion   String?
+  imageUrl  String?
+}
+
+model Stock {
+  id   String @id @default(cuid())
+  code String @unique
+  name String
+}
+
+enum Role {
+  ADMIN
+  PREMIUM
+  FREE
+}
+
+enum SignalStatus {
+  OPEN
+  TP1
+  TP2
+  SL
+  CLOSED
+}
+
+enum Market {
+  SAHAM
+  FOREX
+  CRYPTO
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  excerpt   String?
+  content   Json
+  coverUrl  String?
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
