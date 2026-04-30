@@ -2,7 +2,26 @@
 
 import { useState } from 'react';
 
-export default function SignalForm({ initialData, onSubmit }: any) {
+type SignalFormData = {
+  code: string;
+  companyName: string;
+  entryMin: string;
+  entryMax: string;
+  sl: string;
+  tp1: string;
+  tp2: string;
+  summary: string;
+  content: string;
+  status: string;
+};
+
+type Props = {
+  initialData?: Partial<SignalFormData>;
+  onSubmit: (data: SignalFormData) => void;
+  onChange?: (data: SignalFormData) => void;
+};
+
+export default function SignalForm({ initialData, onSubmit, onChange }: Props) {
   const [form, setForm] = useState({
     code: initialData?.code || '',
     companyName: initialData?.companyName || '',
