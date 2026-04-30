@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import SignalForm from '@/components/signal-form';
 import SignalPreview from '@/components/signal-preview';
+const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
 
 export default function EditSignalPage() {
   const { id } = useParams();
@@ -20,7 +21,7 @@ export default function EditSignalPage() {
   if (!data) return <p>Loading...</p>;
 
   const handleSubmit = async (form: any) => {
-    await fetch(`/api/signal/${id}`, {
+    await fetch(`${baseUrl}/api/signal/${id}`, {
       method: 'PATCH',
       body: JSON.stringify(form),
     });

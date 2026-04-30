@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
 
 export default function CreateSignalPage() {
   const router = useRouter();
@@ -15,7 +16,7 @@ export default function CreateSignalPage() {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    const res = await fetch('/api/admin/signal', {
+    const res = await fetch(`${baseUrl}/api/admin/signal`, {
       method: 'POST',
       body: formData,
     });

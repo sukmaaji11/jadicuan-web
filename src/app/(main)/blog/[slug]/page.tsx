@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
+const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
 
 async function getPost(slug: string) {
-  const res = await fetch(`/api/post/${slug}`, {
+  const res = await fetch(`${baseUrl}/api/post/${slug}`, {
     cache: 'no-store',
   });
 
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: any) {
 }
 
 export async function generateStaticParams() {
-  const res = await fetch('/api/blog');
+  const res = await fetch(`${baseUrl}/api/blog`);
   const posts = await res.json();
 
   return posts.map((post: any) => ({

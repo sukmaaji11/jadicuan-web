@@ -8,6 +8,7 @@ import { computeDrawdown, computeAnalytics } from '@/lib/analytics';
 import { StatsSection } from '@/components/stat-section';
 import { formatShort } from '@/lib/format';
 import TradeDetailModal from '@/components/trade-detail-modal';
+const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
 
 export default function TrackerPage() {
   const { data: session, status } = useSession();
@@ -27,7 +28,7 @@ export default function TrackerPage() {
   useEffect(() => {
     if (!session) return;
 
-    fetch('/api/trade')
+    fetch(`${baseUrl}/api/trade`)
       .then((res) => res.json())
       .then((data) => setTrades(Array.isArray(data) ? data : []))
       .catch(() => setTrades([]));

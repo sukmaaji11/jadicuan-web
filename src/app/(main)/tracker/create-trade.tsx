@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import BottomSheet from '@/components/bottom-sheet';
 import { Plus } from 'lucide-react';
+const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
 
 export function CreateTrade() {
   const [form, setForm] = useState({
@@ -52,7 +53,7 @@ export function CreateTrade() {
 
     if (val.length >= 2) {
       try {
-        const res = await fetch(`/api/stock/search?q=${val}`);
+        const res = await fetch(`${baseUrl}/api/stock/search?q=${val}`);
 
         if (!res.ok) {
           setResults([]);
@@ -82,7 +83,7 @@ export function CreateTrade() {
         return;
       }
 
-      const res = await fetch('/api/trade', {
+      const res = await fetch(`${baseUrl}/api/trade`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', // ✅ WAJIB

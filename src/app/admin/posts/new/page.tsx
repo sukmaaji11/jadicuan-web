@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import BlockEditor from '@/components/block-editor';
 import Preview from '@/components/post-preview';
 
+const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+
 export default function NewPostPage() {
   const [rawText, setRawText] = useState('');
   const [form, setForm] = useState({
@@ -30,7 +32,7 @@ export default function NewPostPage() {
   }, [form.title]);
 
   const handleSubmit = async () => {
-    const res = await fetch('/api/post', {
+    const res = await fetch(`${baseUrl}/api/post`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

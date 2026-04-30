@@ -5,6 +5,9 @@ import { useParams, useRouter } from 'next/navigation';
 import BlockEditor from '@/components/block-editor';
 import PublishToggle from '@/components/publish-toggle';
 import PostPreview from '@/components/post-preview';
+
+const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+
 type Block =
   | { id: string; type: 'paragraph'; text: string }
   | { id: string; type: 'heading'; text: string }
@@ -28,7 +31,7 @@ export default function EditPostPage() {
   // 🔥 FETCH DATA
   useEffect(() => {
     const fetchPost = async () => {
-      const res = await fetch(`/api/post/${id}`);
+      const res = await fetch(`${baseUrl}/api/post/${id}`);
       const data = await res.json();
 
       setForm({
@@ -50,7 +53,7 @@ export default function EditPostPage() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    await fetch(`/api/post/${id}`, {
+    await fetch(`${baseUrl}/api/post/${id}`, {
       method: 'PUT',
       body: JSON.stringify(form),
     });

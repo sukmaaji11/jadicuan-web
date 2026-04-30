@@ -1,12 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
 
 export default function AdminDashboardPage() {
   const [data, setData] = useState<any>(null);
 
   useEffect(() => {
-    fetch('/api/admin/analytics')
+    fetch(`${baseUrl}/api/admin/analytics`)
       .then((res) => res.json())
       .then(setData);
   }, []);

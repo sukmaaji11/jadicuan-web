@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import PublishToggle from '@/components/publish-toggle';
 
+const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+
 async function getPosts() {
-  const res = await fetch('http://localhost:3000/api/post', {
+  const res = await fetch(`${baseUrl}/api/post`, {
     cache: 'no-store',
   });
 

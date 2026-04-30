@@ -1,7 +1,8 @@
 import Link from 'next/link';
+const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
 
 async function getPosts() {
-  const res = await fetch('http://localhost:3000/api/blog', {
+  const res = await fetch(`${baseUrl}/api/blog`, {
     cache: 'no-store',
   });
   return res.json();

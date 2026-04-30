@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function RegisterPage() {
 
     setLoading(true);
 
-    const res = await fetch('/api/auth/register', {
+    const res = await fetch(`${baseUrl}/api/auth/register`, {
       method: 'POST',
       body: JSON.stringify(form),
     });
@@ -39,7 +40,7 @@ export default function RegisterPage() {
     }
 
     // 👉 auto login setelah register
-    await fetch('/api/auth/login', {
+    await fetch(`${baseUrl}/api/auth/login`, {
       method: 'POST',
       body: JSON.stringify({
         email: form.email,
