@@ -34,6 +34,10 @@ export default function AdminSignalCard({ signal }: { signal: Signal }) {
       label: '❌ SL',
       class: 'bg-rose-500/10 text-rose-500',
     },
+    CLOSED: {
+      label: '⚫ Closed',
+      class: 'bg-zinc-500/10 text-zinc-500',
+    },
   };
 
   const handleDelete = async () => {
