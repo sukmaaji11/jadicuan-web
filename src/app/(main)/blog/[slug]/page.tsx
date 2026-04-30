@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 
 async function getPost(slug: string) {
-  const res = await fetch(`http://localhost:3000/api/blog/${slug}`, {
+  const res = await fetch(`/api/post/${slug}`, {
     cache: 'no-store',
   });
 
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: any) {
 }
 
 export async function generateStaticParams() {
-  const res = await fetch('http://localhost:3000/api/blog');
+  const res = await fetch('/api/blog');
   const posts = await res.json();
 
   return posts.map((post: any) => ({
