@@ -40,6 +40,12 @@ export default async function Page({ params }: any) {
 
   if (!post) return notFound();
 
+  type Block =
+    | { id: string; type: 'paragraph'; text: string }
+    | { id: string; type: 'heading'; text: string }
+    | { id: string; type: 'insight'; text: string };
+
+  const content = Array.isArray(post.content) ? (post.content as Block[]) : [];
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
       {/* TITLE */}
@@ -54,7 +60,7 @@ export default async function Page({ params }: any) {
       <hr className="my-8 border-zinc-200 dark:border-zinc-800" />
       {/* CONTENT (BLOCK RENDER) */}
       <div className="space-y-4">
-        {(post.content || []).map((block: any, i: number) => {
+        {content.map((block: Block, i: number) => {
           switch (block.type) {
             case 'heading':
               return (
