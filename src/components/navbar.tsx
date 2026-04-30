@@ -86,7 +86,7 @@ export function Navbar() {
               Masuk
             </Link>
           ) : (
-            <UserMenu email={session.user?.email} />
+            <UserMenu email={session.user?.email ?? undefined} />
           )}
         </div>
 
