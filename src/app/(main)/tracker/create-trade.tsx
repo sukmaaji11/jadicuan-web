@@ -35,8 +35,11 @@ export function CreateTrade() {
       entry: '',
       exit: '',
       quantity: '',
-      type: 'BUY',
-      status: 'OPEN',
+      type: '',
+      status: '',
+      note: '',
+      setup: '',
+      emotion: '',
     });
 
     setSelectedStock(null);
