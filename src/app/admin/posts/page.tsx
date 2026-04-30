@@ -9,6 +9,14 @@ async function getPosts() {
   return res.json();
 }
 
+type Post = {
+  id: string;
+  title: string;
+  slug: string;
+  published: boolean;
+  excerpt?: string;
+};
+
 export default async function AdminBlogPage() {
   const posts = await getPosts();
 
@@ -56,7 +64,7 @@ export default async function AdminBlogPage() {
             </Link>
           </div>
         )}
-        {posts.map((post) => (
+        {posts.map((post: Post) => (
           <div
             key={post.id}
             className="p-5 rounded-2xl border bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 hover:shadow-sm transition"
