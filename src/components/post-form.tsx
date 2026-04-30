@@ -4,20 +4,34 @@ import { useState, useEffect } from 'react';
 import BlockEditor from '@/components/block-editor';
 import PublishToggle from '@/components/publish-toggle';
 
+type Block =
+  | { id: string; type: 'paragraph'; text: string }
+  | { id: string; type: 'heading'; text: string }
+  | { id: string; type: 'insight'; text: string };
+
+type PostForm = {
+  title: string;
+  slug: string;
+  excerpt: string;
+  coverUrl: string;
+  published: boolean;
+  content: Block[];
+};
+
 export default function PostForm({
   initialData,
   onSubmit,
 }: {
-  initialData?: any;
-  onSubmit: (data: any) => Promise<void>;
+  initialData?: PostForm;
+  onSubmit: (data: PostForm) => Promise<void>;
 }) {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<PostForm>({
     title: '',
     slug: '',
     excerpt: '',
-    content: [],
     coverUrl: '',
     published: false,
+    content: [], // ✅ sekarang sudah Block[]
   });
 
   useEffect(() => {
@@ -33,7 +47,7 @@ export default function PostForm({
     }
   }, [initialData]);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await onSubmit(form);
   };
@@ -67,7 +81,9 @@ export default function PostForm({
       {/* 🔥 BLOCK EDITOR */}
       <BlockEditor
         value={form.content}
-        onChange={(blocks) => setForm({ ...form, content: blocks })}
+        onChange={(blocks: Block[]) =>
+          setForm((prev) => ({ ...prev, content: blocks }))
+        }
       />
 
       {/* COVER */}
