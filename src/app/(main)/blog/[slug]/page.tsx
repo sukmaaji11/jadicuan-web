@@ -1,18 +1,17 @@
 import { notFound } from 'next/navigation';
-const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+import { prisma } from '@/lib/prisma';
 
+// 🔥 ambil post langsung dari DB
 async function getPost(slug: string) {
-  const res = await fetch(`${baseUrl}/api/post/${slug}`, {
-    cache: 'no-store',
+  return prisma.post.findUnique({
+    where: { slug },
   });
-
-  if (!res.ok) return null;
-  return res.json();
 }
 
-// SEO
+// 🔥 SEO
 export async function generateMetadata({ params }: any) {
-  const { slug } = await params;
+  const { slug } = params;
+
   const post = await getPost(slug);
 
   if (!post) return {};
@@ -23,17 +22,20 @@ export async function generateMetadata({ params }: any) {
   };
 }
 
+// 🔥 static params
 export async function generateStaticParams() {
-  const res = await fetch(`${baseUrl}/api/blog`);
-  const posts = await res.json();
+  const posts = await prisma.post.findMany({
+    select: { slug: true },
+  });
 
-  return posts.map((post: any) => ({
+  return posts.map((post) => ({
     slug: post.slug,
   }));
 }
 
+// 🔥 PAGE
 export default async function Page({ params }: any) {
-  const { slug } = await params;
+  const { slug } = params;
   const post = await getPost(slug);
 
   if (!post) return notFound();
@@ -42,7 +44,6 @@ export default async function Page({ params }: any) {
     <div className="max-w-3xl mx-auto px-4 py-10">
       {/* TITLE */}
       <h1 className="text-2xl md:text-3xl font-bold mb-4">{post.title}</h1>
-
       {/* COVER */}
       {post.coverUrl && (
         <img
@@ -50,9 +51,7 @@ export default async function Page({ params }: any) {
           className="w-full h-60 md:h-80 object-cover rounded-xl mb-6"
         />
       )}
-
       <hr className="my-8 border-zinc-200 dark:border-zinc-800" />
-
       {/* CONTENT (BLOCK RENDER) */}
       <div className="space-y-4">
         {(post.content || []).map((block: any, i: number) => {
