@@ -46,10 +46,9 @@ export default function BlockEditor({
   };
 
   useEffect(() => {
-    const initial =
-      value && value.length
-        ? value
-        : [{ id: uid(), type: 'paragraph', text: '' }];
+    const initial: Block[] = value?.length
+      ? value
+      : [{ id: uid(), type: 'paragraph', text: '' }];
 
     setBlocks(initial);
     onChange(initial);
