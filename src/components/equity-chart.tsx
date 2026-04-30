@@ -83,8 +83,10 @@ export function EquityChart({ trades }: { trades: Trade[] }) {
 
             {/* Tooltip */}
             <Tooltip
-              formatter={(value: any) =>
-                value ? `Rp ${Number(value).toLocaleString('id-ID')}` : '-'
+              formatter={(value) =>
+                typeof value === 'number'
+                  ? `Rp ${value.toLocaleString('id-ID')}`
+                  : '-'
               }
               contentStyle={{
                 background: '#18181b',
