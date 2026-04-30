@@ -11,7 +11,7 @@ type Signal = {
   entryMax: number;
   tp1?: number | null;
   sl: number;
-  status: 'OPEN' | 'TP1' | 'TP2' | 'SL';
+  status: 'OPEN' | 'TP1' | 'TP2' | 'SL' | 'CLOSED';
 };
 
 export default function AdminSignalCard({ signal }: { signal: Signal }) {
