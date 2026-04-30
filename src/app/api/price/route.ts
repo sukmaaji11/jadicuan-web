@@ -9,30 +9,23 @@ export async function GET(req: Request) {
 
   const codes = symbols.split(',').slice(0, 5);
 
-  const results = [];
+  const results = await Promise.all(
+    codes.map(async (code) => {
+      try {
+        const quote: any = await yahooFinance.quote(`${code}.JK`);
 
-  for (const code of codes) {
-    try {
-      const quote = await yahooFinance.quote(`${code}.JK`);
+        const price =
+          quote?.regularMarketPrice ??
+          quote?.regularMarketPreviousClose ??
+          quote?.postMarketPrice ??
+          null;
 
-      const price =
-        quote?.regularMarketPrice ??
-        quote?.regularMarketPreviousClose ??
-        quote?.postMarketPrice ??
-        null;
-
-      results.push({
-        code,
-        price,
-      });
-    } catch (err) {
-      results.push({
-        code,
-        price: null,
-      });
-    }
-    console.log('RESULT:', results);
-  }
+        return { code, price };
+      } catch {
+        return { code, price: null };
+      }
+    }),
+  );
 
   return NextResponse.json(results);
 }
