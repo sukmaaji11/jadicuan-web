@@ -10,8 +10,11 @@ export function CreateTrade() {
     entry: '',
     exit: '',
     quantity: '',
-    type: 'BUY',
-    status: 'OPEN',
+    type: '',
+    status: '',
+    note: '', // ✅ TAMBAH INI
+    setup: '', // (kalau kamu pakai juga)
+    emotion: '', // (kalau ada juga)
   });
 
   const [code, setCode] = useState('');
